@@ -113,8 +113,35 @@ namespace iCalApp
 
             foreach (var line in listOfLines)
             {
-                var lineSplit = line.Split(':');
-                tempObject.Add(lineSplit[0], lineSplit[1]);
+                if (line.Contains(';'))
+                {
+                    var semicolonLineSplit = line.Split(';');
+                    var componentName = semicolonLineSplit[0];
+
+                    if (semicolonLineSplit.Length < 2)
+                        throw (new Exception());
+
+                    var componentObject = new ExpandoObject() as IDictionary<string, object>;
+                    var colonLineSplit = semicolonLineSplit[1].Split(':');
+
+                    var equalitySignLineSplit = semicolonLineSplit[1].Split('=');
+
+                    if(equalitySignLineSplit.Length % 2 != 0)
+                        throw (new Exception());
+
+                    for (var i = 0; i < equalitySignLineSplit.Length; i += 2)
+                    {
+                        componentObject.Add(equalitySignLineSplit[i], equalitySignLineSplit[i + 1]);
+                    }
+                    componentObject.Add("VALUE", colonLineSplit[1]);
+                    tempObject.Add(componentName, (ExpandoObject)componentObject);
+                }
+                else
+                {
+                    var lineSplit = line.Split(':');
+                    tempObject.Add(lineSplit[0], lineSplit[1]);
+                }
+                
             }
 
             foreach (var objectsElements in childrenNodesLinesIndexes)
