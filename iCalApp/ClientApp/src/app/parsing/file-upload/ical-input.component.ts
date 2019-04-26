@@ -29,7 +29,7 @@ import { DataService } from "../shared/data.service";
       font-size: 90px;
       margin: 10px;
     }
-    .centered p {
+    .centered-text p {
       font-size: 30px;
     }
   
@@ -45,19 +45,25 @@ export class iCalInputComponent {
   }
 
   addFiles(event) {
-    let validFiles = this.validateFileInput(event.files);
+    var files = [];
+
+    if (event.target != undefined && event.target.files.length != 0)
+      files = event.target.files
+    else if (event.files != undefined)
+      files = event.files;
+
+    let validFiles = this.validateFileInput(files);
 
     if(validFiles.length != 0) {
       this.file = validFiles[0];
-      this.dataService.convertFile(this.file).subscribe(data => console.log(data));
-    }
-      
+      this.dataService.convertFile(this.file);//.subscribe(data => console.log(data));
+    }    
   }
 
   validateFileInput(files: File[]) : File[]{
     let validFiles: Array<File> = []; 
 
-    if(files.length > 0) {
+    if (files != undefined && files.length > 0) {
             
       Array.prototype.forEach.call(files, f => {
           var name = f.name.split('.');

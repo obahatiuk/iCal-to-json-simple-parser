@@ -11,6 +11,8 @@ import { DragAndDropFileDirective } from './home/drag-and-drop-file.directive';
 import { DataService } from './parsing/shared/data.service';
 import { iCalInputComponent } from './parsing/file-upload/ical-input.component';
 import { JsonResultComponent } from './parsing/result/json-result.component';
+import { JsonPrettyPrintPipe } from './parsing/result/json-prety-print.pipe';
+import { CanActivateResultGuard } from './parsing/result/can-activate-result.guard';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,8 @@ import { JsonResultComponent } from './parsing/result/json-result.component';
     HomeComponent,
     DragAndDropFileDirective,
     iCalInputComponent,
-    JsonResultComponent
+    JsonResultComponent,
+    JsonPrettyPrintPipe
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -27,19 +30,16 @@ import { JsonResultComponent } from './parsing/result/json-result.component';
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: iCalInputComponent, pathMatch: 'full' },
-      { path: 'result', component: JsonResultComponent, canActivate: ['canActivateResultPage'] }
+      { path: 'result', component: JsonResultComponent, canActivate: [CanActivateResultGuard] },
+      { path: '', redirectTo: '/', pathMatch: 'prefix'}
     ])
   ],
   providers: [
     DataService,
-    { provide: 'canActivateResultPage', useValue: checkJsonResult}
+    CanActivateResultGuard
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
 
-export function checkJsonResult(component: JsonResultComponent) {
-  if(component.isAnyResultAvailable)
-    return true;
-  return false;
-}
+
