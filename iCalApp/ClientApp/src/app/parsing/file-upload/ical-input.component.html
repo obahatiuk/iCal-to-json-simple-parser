@@ -1,0 +1,18 @@
+<h1>Welcome to Simple iCal to JSON parser</h1>
+
+<p>Please note that temporary this parser only converts iCal to JSON. There is no option for jCal format</p>
+<p>Each component will be parsed to object which will have VALUE property for value</p>
+<p>Please select only one file</p>
+
+<label for="avatar">Choose a iCal file:</label>
+
+<input type="file" (change)="addFiles($event)" accept=".ics" />
+
+<div (fileChangeEmitter)="addFiles($event)" class="dropzone" drag-and-drop-file>
+    <div class="text-wrapper">
+        <div class="centered-text">
+            <p>Drag and drop your file here</p>
+            <i class="glyphicon glyphicon-upload"></i>
+        </div>
+    </div>
+</div>

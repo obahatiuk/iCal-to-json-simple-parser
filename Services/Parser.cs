@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
-namespace iCalApp
+namespace Services
 {
     public class Parser
     {
@@ -12,14 +14,40 @@ namespace iCalApp
 
         List<int[]> indexes;
 
-        public Parser(string content) {
-            lines = content.Split("\n");
+        public Parser(string content)
+        {
+            lines = content.Split('\n');
+            lines = concatMultiLine(lines);
             var result = mapBegginAndEndIndexes(lines);
 
-            parseCalendar();
+            //parseCalendar();
         }
 
-        List<int[]> mapBegginAndEndIndexes(string[] lines) {
+        string[] concatMultiLine(string[] lines)
+        {
+            var linesList = lines.ToList();
+            var linesWithoutComponentName = lines.Where(l => !l.Contains(':')).ToArray();
+            if (linesWithoutComponentName.Length != 0)
+            {
+                foreach (var line in linesWithoutComponentName)
+                {
+                    var index = linesList.IndexOf(line);
+                    if (line.Contains(';'))
+                    {
+                        linesList[index + 1] = linesList[index] + Regex.Replace(linesList[index + 1], @"\t|\n|\r", "");
+                    }
+                    else
+                    {
+                        linesList[index - 1] = linesList[index - 1] + Regex.Replace(linesList[index], @"\t|\n|\r", "");
+                    }
+                    linesList.RemoveAt(index);
+                }
+            }
+            return linesList.ToArray();
+        }
+
+        List<int[]> mapBegginAndEndIndexes(string[] lines)
+        {
             var begginNodeIndexes = FindBeggingOfTheNodes(lines);
 
             indexes = new List<int[]>();
@@ -28,15 +56,16 @@ namespace iCalApp
             {
                 var nodeName = lines[begginNodeIndex].Split(':')[1];
                 var valuesArray = lines.Skip(begginNodeIndex).ToArray();
-                var endIndex = valuesArray.Where(l => l.Contains("END:"+nodeName)).Select(l => Array.IndexOf(valuesArray, l)).FirstOrDefault();
+                var endIndex = valuesArray.Where(l => l.Contains("END:" + nodeName)).Select(l => Array.IndexOf(valuesArray, l)).FirstOrDefault();
 
                 indexes.Add(new int[] { begginNodeIndex, endIndex + begginNodeIndex });
             }
-            
+
             return indexes;
         }
 
-        int[] FindBeggingOfTheNodes(string[] lines)  {
+        int[] FindBeggingOfTheNodes(string[] lines)
+        {
             return FindLineIndexesWithWordOccurancies(lines, "BEGIN").ToArray();
         }
 
@@ -59,12 +88,13 @@ namespace iCalApp
             return lines.Where(l => l.ToLower().Contains(word.ToLower())).ToArray();
         }
 
-        void parseCalendar()
+        public ExpandoObject parseCalendar()
         {
             var result = new ExpandoObject();
             parseLinesToObject(indexes[0][0], indexes[0][1], ref result);
-            var json = Newtonsoft.Json.JsonConvert.SerializeObject(result);
-            Console.WriteLine(json);
+            //var json = Newtonsoft.Json.JsonConvert.SerializeObject(result);
+            //Console.WriteLine(json);
+            return result;
         }
 
         void parseLinesToObject(int startIndex, int endIndex, ref ExpandoObject parentElement)
@@ -74,7 +104,7 @@ namespace iCalApp
 
             var tempObject = new ExpandoObject() as IDictionary<string, object>;
 
-            var currentLevelNodeName = lines[startIndex].Split(":")[1];
+            var currentLevelNodeName = lines[startIndex].Split(':')[1];
 
             var childrenObjectIndexes = indexes.Where(i => i[0] > startIndex + 1 && i[1] < endIndex + 1).ToArray();
 
@@ -113,35 +143,42 @@ namespace iCalApp
 
             foreach (var line in listOfLines)
             {
+                var componentObject = new ExpandoObject() as IDictionary<string, object>;
+                var componentName = "";
+                var value = "";
+
+                var colonLineSplit = line.Split(':');
+
+                if (colonLineSplit.Length != 2)
+                    throw (new Exception());
+
                 if (line.Contains(';'))
                 {
-                    var semicolonLineSplit = line.Split(';');
-                    var componentName = semicolonLineSplit[0];
+                    var semicolonLineSplit = colonLineSplit[0].Split(';');
+                    componentName = semicolonLineSplit[0];
 
                     if (semicolonLineSplit.Length < 2)
                         throw (new Exception());
 
-                    var componentObject = new ExpandoObject() as IDictionary<string, object>;
-                    var colonLineSplit = semicolonLineSplit[1].Split(':');
-
                     var equalitySignLineSplit = semicolonLineSplit[1].Split('=');
 
-                    if(equalitySignLineSplit.Length % 2 != 0)
+                    if (equalitySignLineSplit.Length % 2 != 0)
                         throw (new Exception());
 
                     for (var i = 0; i < equalitySignLineSplit.Length; i += 2)
                     {
                         componentObject.Add(equalitySignLineSplit[i], equalitySignLineSplit[i + 1]);
                     }
-                    componentObject.Add("VALUE", colonLineSplit[1]);
-                    tempObject.Add(componentName, (ExpandoObject)componentObject);
+                    value = colonLineSplit[1];
+
                 }
                 else
                 {
-                    var lineSplit = line.Split(':');
-                    tempObject.Add(lineSplit[0], lineSplit[1]);
+                    componentName = colonLineSplit[0];
+                    value = colonLineSplit[1];
                 }
-                
+                componentObject.Add("VALUE", value);
+                tempObject.Add(componentName, (ExpandoObject)componentObject);
             }
 
             foreach (var objectsElements in childrenNodesLinesIndexes)
