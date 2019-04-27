@@ -1,9 +1,9 @@
 import { Component } from "@angular/core";
-import { DataService } from "../shared/data.service";
+import { DataService } from "../../shared/data.service";
 
 @Component({
-    selector: 'ical-input',
-    templateUrl: './ical-input.component.html',
+    selector: 'ical-file-upload',
+    templateUrl: './ical-file-upload.component.html',
     styles: [`
     .dropzone {
       margin: 10px;
@@ -35,7 +35,7 @@ import { DataService } from "../shared/data.service";
   
     `]
 })
-export class iCalInputComponent {
+export class iCalFileUploadComponent {
     file: File;
 
   allowedFileExtensions: Array<string> = ['ics'];

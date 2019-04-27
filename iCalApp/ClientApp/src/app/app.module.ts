@@ -9,10 +9,11 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { DragAndDropFileDirective } from './home/drag-and-drop-file.directive';
 import { DataService } from './parsing/shared/data.service';
-import { iCalInputComponent } from './parsing/file-upload/ical-input.component';
+import { iCalFileUploadComponent  } from './parsing/iCal-upload/file-upload/ical-file-upload.component';
 import { JsonResultComponent } from './parsing/result/json-result.component';
-import { JsonPrettyPrintPipe } from './parsing/result/json-prety-print.pipe';
 import { CanActivateResultGuard } from './parsing/result/can-activate-result.guard';
+import { iCalUploadComponent } from './parsing/iCal-upload/iCal-upload.component';
+import { iCalTextUploadComponent } from './parsing/iCal-upload/text-upload/iCal-text-upload.component';
 
 @NgModule({
   declarations: [
@@ -20,18 +21,22 @@ import { CanActivateResultGuard } from './parsing/result/can-activate-result.gua
     NavMenuComponent,
     HomeComponent,
     DragAndDropFileDirective,
-    iCalInputComponent,
+    iCalFileUploadComponent,
     JsonResultComponent,
-    JsonPrettyPrintPipe
+    iCalUploadComponent,
+    iCalTextUploadComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: iCalInputComponent, pathMatch: 'full' },
+      { path: '', component: iCalUploadComponent, children: [
+        { path: '', component: iCalTextUploadComponent},
+        { path: 'file-upload', component: iCalFileUploadComponent}
+      ] },
       { path: 'result', component: JsonResultComponent, canActivate: [CanActivateResultGuard] },
-      { path: '', redirectTo: '/', pathMatch: 'prefix'}
+      { path: '**', redirectTo: ''}// pathMatch: 'prefix'
     ])
   ],
   providers: [

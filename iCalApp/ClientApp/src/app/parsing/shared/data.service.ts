@@ -19,7 +19,22 @@ export class DataService {
 
         var formData = new FormData();
         formData.append('fileToConvert', file, file.name);
-        this.http.post('api/iCalParser/ConvertiCalToSimpleJson', formData)
+        this.http.post('api/iCalParser/ConvertiCalFileToSimpleJson', formData)
+        .subscribe(
+            data => 
+            {
+                console.log(data);
+                this.json.next(data);
+                this.router.navigate(['result']);
+            });
+    }
+
+    convertText(text: string) {
+        this.isAnyDataToConvert.next(true);
+
+        var formData = new FormData();
+        formData.append('textToConvert', text);
+        this.http.post('api/iCalParser/ConvertiCalTextToSimpleJson', formData)
         .subscribe(
             data => 
             {

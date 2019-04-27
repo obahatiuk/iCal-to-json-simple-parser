@@ -14,7 +14,7 @@ namespace iCalApp.Controllers
     public class iCalParserController : ControllerBase
     {
         [HttpPost("[action]")]
-        public JsonResult ConvertiCalToSimpleJson()
+        public JsonResult ConvertiCalFileToSimpleJson()
         {
             //var filesToProvide =  Request.Body;
             var files = Request.Form.Files;
@@ -38,6 +38,21 @@ namespace iCalApp.Controllers
 
                 return new JsonResult(result);
             }
+        }
+
+        [HttpPost("[action]")]
+        public JsonResult ConvertiCalTextToSimpleJson()
+        {
+            var text = Request.Form["textToConvert"];
+
+            text = text.ToString().Replace("<br/>", "\n");
+
+            Parser parser = new Parser(text);
+
+            var result = parser.parseCalendar();
+
+            return new JsonResult(result);
+            
         }
 
 
