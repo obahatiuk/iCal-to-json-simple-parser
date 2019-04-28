@@ -14,6 +14,7 @@ import { JsonResultComponent } from './parsing/result/json-result.component';
 import { CanActivateResultGuard } from './parsing/result/can-activate-result.guard';
 import { iCalUploadComponent } from './parsing/iCal-upload/iCal-upload.component';
 import { iCalTextUploadComponent } from './parsing/iCal-upload/text-upload/iCal-text-upload.component';
+import { ApiInfoComponent } from './api-info/api-info.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { iCalTextUploadComponent } from './parsing/iCal-upload/text-upload/iCal-
     iCalFileUploadComponent,
     JsonResultComponent,
     iCalUploadComponent,
-    iCalTextUploadComponent
+    iCalTextUploadComponent,
+    ApiInfoComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -35,6 +37,7 @@ import { iCalTextUploadComponent } from './parsing/iCal-upload/text-upload/iCal-
         { path: '', component: iCalTextUploadComponent},
         { path: 'file-upload', component: iCalFileUploadComponent}
       ] },
+      { path: 'api-info', component: ApiInfoComponent},
       { path: 'result', component: JsonResultComponent, canActivate: [CanActivateResultGuard] },
       { path: '**', redirectTo: ''}// pathMatch: 'prefix'
     ])

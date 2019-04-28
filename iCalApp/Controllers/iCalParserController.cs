@@ -54,12 +54,5 @@ namespace iCalApp.Controllers
             return new JsonResult(result);
             
         }
-
-
-        [HttpGet("[action]")]
-        public void Test()
-        {
-            var x = 0;
-        }
     }
 }

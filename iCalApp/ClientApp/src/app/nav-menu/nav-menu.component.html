@@ -7,14 +7,19 @@
                 <span class='icon-bar'></span>
                 <span class='icon-bar'></span>
             </button>
-            <a class='navbar-brand' [routerLink]='["/"]'>iCalApp</a>
+            <a class='navbar-brand' [routerLink]='[""]'>iCalApp</a>
         </div>
         <div class='clearfix'></div>
         <div class='navbar-collapse collapse' [ngClass]='{ "in": isExpanded }'>
             <ul class='nav navbar-nav'>
                 <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
-                    <a [routerLink]='["/"]' (click)='collapse()'>
+                    <a [routerLink]='[""]' (click)='collapse()'>
                         <span class='glyphicon glyphicon-home'></span> Home
+                    </a>
+                </li>
+                <li>
+                    <a [routerLink]='["api-info"]' (click)='collapse()'>
+                        <span class='glyphicon glyphicon-th-list'></span>Api info 
                     </a>
                 </li>
             </ul>

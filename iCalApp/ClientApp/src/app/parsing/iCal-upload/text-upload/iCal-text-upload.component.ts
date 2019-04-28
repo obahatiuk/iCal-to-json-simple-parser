@@ -4,10 +4,13 @@ import { DataService } from "../../shared/data.service";
 @Component({
     template: `
     <div>
-        <textarea type="text" [(ngModel)]="text"></textarea>
+    
+    <div class="col-md-10">
+        <textarea type="text" [(ngModel)]="text" placeholder="Paste your iCal here..."></textarea>
     </div>
-    <div>
-        <button (click)="convert()" type="button">Convert</button>
+    <div class="col-md-1 button-area">
+        <button (click)="convert()" class="btn btn-success button-area-button" type="button">Convert</button>
+    </div>
     </div>
     `,
     styles: [`
@@ -19,6 +22,21 @@ import { DataService } from "../../shared/data.service";
         margin-left: auto;
         margin-right: auto;
     }
+    
+    .button-area-button {
+        margin: 5px;
+    }
+    
+    @media(min-width: 991px) {
+        .button-area {
+            height: 400px;
+        }
+        
+        .button-area-button {
+            position: absolute; right: 0;bottom: 0;
+        }
+    }
+    
     `]
 })
 export class iCalTextUploadComponent {
