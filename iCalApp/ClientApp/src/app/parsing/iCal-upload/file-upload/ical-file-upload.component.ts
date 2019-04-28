@@ -1,5 +1,7 @@
-import { Component } from "@angular/core";
+import { Component, AfterViewInit } from "@angular/core";
 import { DataService } from "../../shared/data.service";
+import { MatDialog } from "@angular/material";
+import { ErrorComponent } from "../../../error/error.component";
 
 @Component({
     selector: 'ical-file-upload',
@@ -8,7 +10,6 @@ import { DataService } from "../../shared/data.service";
     .dropzone {
       margin: 10px;
       min-height: 400px;
-      min-width: 800px;
       display: table;
       width: 100%;
       background-color: #eee;
@@ -36,7 +37,12 @@ import { DataService } from "../../shared/data.service";
     `]
 })
 export class iCalFileUploadComponent {
+  // ngAfterViewInit(): void {
+  //   setTimeout( () => this.dialog.open(ErrorComponent, {
+  //   }), 3000);
+  // }
     file: File;
+    isFileValid = true;
 
   allowedFileExtensions: Array<string> = ['ics'];
 
@@ -52,26 +58,23 @@ export class iCalFileUploadComponent {
     else if (event.files != undefined)
       files = event.files;
 
-    let validFiles = this.validateFileInput(files);
+    this.file = files[0];
+    this.isFileValid = this.validateFileInput(this.file);
 
-    if(validFiles.length != 0) {
-      this.file = validFiles[0];
+    if(this.isFileValid) {     
       this.dataService.convertFile(this.file);//.subscribe(data => console.log(data));
-    }    
+    }
   }
 
-  validateFileInput(files: File[]) : File[]{
-    let validFiles: Array<File> = []; 
+  validateFileInput(file: File) : boolean {
 
-    if (files != undefined && files.length > 0) {
-            
-      Array.prototype.forEach.call(files, f => {
-          var name = f.name.split('.');
-          if(this.allowedFileExtensions.indexOf(name[name.length - 1]) != -1)
-              validFiles.push(f);
-      })
-    }
+    if (file == undefined) 
+      return false;
 
-    return validFiles;    
+    var name = file.name.split('.');
+    if(this.allowedFileExtensions.indexOf(name[name.length - 1]) != -1)
+      return true
+
+    return false;    
   }
 }

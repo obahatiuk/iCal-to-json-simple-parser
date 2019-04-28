@@ -13,20 +13,20 @@ namespace iCalApp.Controllers
     [ApiController]
     public class iCalParserController : ControllerBase
     {
-        [HttpPost("[action]")]
-        public JsonResult ConvertiCalFileToSimpleJson()
+        [HttpPost("[action]"), HttpGet("[action]")]
+        public IActionResult ConvertiCalFileToSimpleJson()
         {
             //var filesToProvide =  Request.Body;
             var files = Request.Form.Files;
 
             if (files.Count == 0)
-                return new JsonResult(new { result = "Something went wrong" });
+                return new BadRequestResult();
 
             using (StreamReader file = new StreamReader(files[0].OpenReadStream()))
             {
                 var content = "";
                 string ln = "";
-                var startReading = false;
+
                 while ((ln = file.ReadLine()) != null)
                 {
                     content += ln + "\n";
@@ -40,12 +40,16 @@ namespace iCalApp.Controllers
             }
         }
 
-        [HttpPost("[action]")]
-        public JsonResult ConvertiCalTextToSimpleJson()
+        [HttpPost("[action]"), HttpGet("[action]")]
+        public IActionResult ConvertiCalTextToSimpleJson()
         {
-            var text = Request.Form["textToConvert"];
+            if (!(Request.Form.Keys.Contains("textToConvert") || Request.Form.Keys.Contains("newLineSeparator")))
+                return new BadRequestResult();
 
-            text = text.ToString().Replace("<br/>", "\n");
+            var text = Request.Form["textToConvert"];
+            var newLineSeparator = Request.Form["newLineSeparator"];
+
+            text = text.ToString().Replace(newLineSeparator.ToString(), "\n");
 
             Parser parser = new Parser(text);
 

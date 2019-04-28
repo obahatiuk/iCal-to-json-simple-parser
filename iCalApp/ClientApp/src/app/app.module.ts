@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -15,6 +15,10 @@ import { CanActivateResultGuard } from './parsing/result/can-activate-result.gua
 import { iCalUploadComponent } from './parsing/iCal-upload/iCal-upload.component';
 import { iCalTextUploadComponent } from './parsing/iCal-upload/text-upload/iCal-text-upload.component';
 import { ApiInfoComponent } from './api-info/api-info.component';
+import { ErrorComponent } from './error/error.component';
+import { MatDialogModule } from '@angular/material';
+import { HttpErrorResponseInterceptor } from './common/http-error.interceptor';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -26,12 +30,15 @@ import { ApiInfoComponent } from './api-info/api-info.component';
     JsonResultComponent,
     iCalUploadComponent,
     iCalTextUploadComponent,
-    ApiInfoComponent
+    ApiInfoComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    MatDialogModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot([
       { path: '', component: iCalUploadComponent, children: [
         { path: '', component: iCalTextUploadComponent},
@@ -44,9 +51,12 @@ import { ApiInfoComponent } from './api-info/api-info.component';
   ],
   providers: [
     DataService,
-    CanActivateResultGuard
+    CanActivateResultGuard,
+    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorResponseInterceptor, multi: true },
+    
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ErrorComponent]
 })
 export class AppModule { }
 

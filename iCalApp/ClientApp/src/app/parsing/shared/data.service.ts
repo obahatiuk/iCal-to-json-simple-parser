@@ -29,11 +29,12 @@ export class DataService {
             });
     }
 
-    convertText(text: string) {
+    convertText(text: string, newLineSeparator: string) {
         this.isAnyDataToConvert.next(true);
 
         var formData = new FormData();
         formData.append('textToConvert', text);
+        formData.append('newLineSeparator', newLineSeparator)
         this.http.post('api/iCalParser/ConvertiCalTextToSimpleJson', formData)
         .subscribe(
             data => 
