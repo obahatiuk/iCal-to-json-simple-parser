@@ -12,12 +12,12 @@
         <div class='clearfix'></div>
         <div class='navbar-collapse collapse' [ngClass]='{ "in": isExpanded }'>
             <ul class='nav navbar-nav'>
-                <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
-                    <a [routerLink]='[""]' (click)='collapse()'>
+                <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: false }'>
+                    <a [routerLink]='["convert"]' (click)='collapse()'>
                         <span class='glyphicon glyphicon-home'></span> Home
                     </a>
                 </li>
-                <li>
+                <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: false }'>
                     <a [routerLink]='["api-info"]' (click)='collapse()'>
                         <span class='glyphicon glyphicon-th-list'></span>Api info 
                     </a>

@@ -4,12 +4,23 @@ import { Component } from "@angular/core";
     template: `
     <div style="position: fixed;width: 100%;height: 100%;display: table;">
 
-        <div  style="display: table-cell;vertical-align: middle;">
+        <div  style="display: table-cell;">
             <h2>Here is some api info:</h2>
-            <h4>Endpoint: <b><i>'api/iCalParser/ConvertiCalTextToSimpleJson'</i></b> expects multiform-data with string value with name <b><i>'textToConvert'</i></b></h4>
-            <h4>Endpoint: <b><i>'api/iCalParser/ConvertiCalFileToSimpleJson'</i></b> expects multiform-data with file value with name <b><i>'fileToConvert'</i></b></h4>
+            <h4><b>POST</b> /parsing/json</h4>
+            <p>Content-Type: <span style="background-color: #edeff2;">multipart/form-data</span></p>
+            <h3>Parameters:</h3>
+            <p><em><span class="api-info-parameter-name">'textToConvert'</span></em> string with iCal</p>
+            <p><span class="api-info-parameter-name">'newLineSeparator'</span> string with characters you used for lines separation</p>
         </div>
     </div>
-    `
+    `,
+    styles: [`
+    .api-info-parameter-name {
+        font-size: 15px;
+        font-family: 'Consolas';
+        color: darkgreen;
+        background-color: #edeff2;
+    }
+    `]
 })
 export class ApiInfoComponent{}

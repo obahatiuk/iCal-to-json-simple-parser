@@ -3,7 +3,7 @@ import { DataService } from "../shared/data.service";
 
 @Component({
     template: `
-    <div>
+    <div style="margin-top: 20px;">
       <pre>{{jsonData | json}}</pre>
     </div>
     `,

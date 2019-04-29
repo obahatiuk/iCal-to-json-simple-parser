@@ -13,7 +13,14 @@ export class DragAndDropFileDirective {
         evt.preventDefault();
         evt.stopPropagation();
 
-        this.background = '#999';
+        this.background = '#e0dcd9';
+    }
+
+    @HostListener('dragleave', ['$event']) public onDragLeave(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+
+        this.background = '#eee';
     }
 
     @HostListener('drop', ['$event']) onDropFile(evt) {

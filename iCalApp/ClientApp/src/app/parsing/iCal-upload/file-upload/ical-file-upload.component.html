@@ -2,20 +2,23 @@
 
 <input type="file" (change)="addFiles($event)" accept=".ics" />
 
-<div (fileChangeEmitter)="addFiles($event)" class="col-md-8 dropzone" drag-and-drop-file>
-    <div class="text-wrapper">
-        <div class="centered-text">
-            <p>Drag and drop your file here</p>
-            <i class="glyphicon glyphicon-upload"></i>
+<div class="col-md-12">
+    <div (fileChangeEmitter)="addFiles($event)" class="col-md-8 dropzone" drag-and-drop-file>
+        <div class="text-wrapper">
+            <div class="centered-text">
+                <p>Drag and drop your file here</p>
+                <i class="glyphicon glyphicon-upload"></i>
+            </div>
         </div>
     </div>
 </div>
 
+
 <div *ngIf="!isFileValid">
-    <div *ngIf="file == undefined">
+    <div *ngIf="file == undefined" class="alert alert-danger">
         Please choose file
     </div>
-    <div *ngIf="file != undefined">
+    <div *ngIf="file != undefined" class="alert alert-danger">
         Please choose file with iCal format
     </div>
 </div>

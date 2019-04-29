@@ -9,11 +9,11 @@ using Services;
 
 namespace iCalApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("parsing")]
     [ApiController]
     public class iCalParserController : ControllerBase
     {
-        [HttpPost("[action]"), HttpGet("[action]")]
+        [HttpPost("file-to-json"), HttpGet("file-to-json")]
         public IActionResult ConvertiCalFileToSimpleJson()
         {
             //var filesToProvide =  Request.Body;
@@ -40,7 +40,7 @@ namespace iCalApp.Controllers
             }
         }
 
-        [HttpPost("[action]"), HttpGet("[action]")]
+        [HttpPost("json"), HttpGet("json")]
         public IActionResult ConvertiCalTextToSimpleJson()
         {
             if (!(Request.Form.Keys.Contains("textToConvert") || Request.Form.Keys.Contains("newLineSeparator")))

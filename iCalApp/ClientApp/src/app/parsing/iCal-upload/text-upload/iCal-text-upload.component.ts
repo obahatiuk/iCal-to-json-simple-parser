@@ -5,8 +5,8 @@ import { DataService } from "../../shared/data.service";
     template: `
     <div>
     
-    <div class="col-md-10">
-        <textarea type="text" [(ngModel)]="text" placeholder="Paste your iCal here..."></textarea>
+    <div class="col-md-11">
+        <textarea type="text" [(ngModel)]="text" class="col-md-12" placeholder="Paste your iCal here..."></textarea>
     </div>
     <div class="col-md-1 button-area">
         <button (click)="convert()" class="btn btn-success button-area-button" type="button">Convert</button>
@@ -14,18 +14,15 @@ import { DataService } from "../../shared/data.service";
     </div>
 
     <div *ngIf="!isTextValid">
-        <div *ngIf="text == undefined">Please paste text</div>
-        <div *ngIf="text != undefined">It seens that there is no new line values and we won't be able to parse it</div>
+        <div *ngIf="text == undefined" class="alert alert-danger">Please paste text</div>
+        <div *ngIf="text != undefined" class="alert alert-danger">It seens that there is no new line values and we won't be able to parse it</div>
     </div>
     `,
     styles: [`
     textarea{
         margin-top: 10px;
-        width: 400px;
         height: 400px;
         display: block;
-        margin-left: auto;
-        margin-right: auto;
     }
     
     .button-area-button {

@@ -12,8 +12,8 @@ import { Component } from "@angular/core";
     </div>
     <div>
         <ul class="nav nav-tabs">
-        <li [routerLinkActive]='["link-active"]'><a [routerLink] = '["/"]'>Text Upload</a></li>
-        <li [routerLinkActive]='["link-active"]'><a  [routerLink] = '["file-upload"]'>File upload</a></li>
+        <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: false }'><a [routerLink] = '["text"]' >Text Upload</a></li>
+        <li [routerLinkActive]='["link-active"]'><a  [routerLink] = '["file"]'>File upload</a></li>
     </ul>
     </div>
     <div>

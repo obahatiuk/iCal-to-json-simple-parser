@@ -40,13 +40,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatDialogModule,
     BrowserAnimationsModule,
     RouterModule.forRoot([
-      { path: '', component: iCalUploadComponent, children: [
-        { path: '', component: iCalTextUploadComponent},
-        { path: 'file-upload', component: iCalFileUploadComponent}
+      { path: 'convert', component: iCalUploadComponent, children: [
+        { path: 'text', component: iCalTextUploadComponent},
+        { path: 'file', component: iCalFileUploadComponent},
+        { path: '**', redirectTo: 'text'}
       ] },
       { path: 'api-info', component: ApiInfoComponent},
       { path: 'result', component: JsonResultComponent, canActivate: [CanActivateResultGuard] },
-      { path: '**', redirectTo: ''}// pathMatch: 'prefix'
+      { path: '**', redirectTo: 'convert/text'}
     ])
   ],
   providers: [

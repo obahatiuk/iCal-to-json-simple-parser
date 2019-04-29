@@ -19,7 +19,7 @@ export class DataService {
 
         var formData = new FormData();
         formData.append('fileToConvert', file, file.name);
-        this.http.post('api/iCalParser/ConvertiCalFileToSimpleJson', formData)
+      this.http.post('parsing/file-to-json', formData)
         .subscribe(
             data => 
             {
@@ -35,8 +35,8 @@ export class DataService {
         var formData = new FormData();
         formData.append('textToConvert', text);
         formData.append('newLineSeparator', newLineSeparator)
-        this.http.post('api/iCalParser/ConvertiCalTextToSimpleJson', formData)
-        .subscribe(
+        this.http.post('parsing/json', formData)
+          .subscribe(
             data => 
             {
                 console.log(data);
