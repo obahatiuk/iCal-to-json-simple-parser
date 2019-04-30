@@ -17,8 +17,6 @@ export class JsonResultComponent {
         this.dataService.isAnyDataToConvert.subscribe(anyData => this.isAnyResultAvailable = anyData);
       this.dataService.json.subscribe(json => {
         this.jsonData = json;
-        //this.jsonData = JSON.stringify(json)
-      console.log(this.jsonData)
       });
     }
 }

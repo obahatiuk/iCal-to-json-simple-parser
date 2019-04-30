@@ -92,8 +92,7 @@ namespace Services
         {
             var result = new ExpandoObject();
             parseLinesToObject(indexes[0][0], indexes[0][1], ref result);
-            //var json = Newtonsoft.Json.JsonConvert.SerializeObject(result);
-            //Console.WriteLine(json);
+
             return result;
         }
 

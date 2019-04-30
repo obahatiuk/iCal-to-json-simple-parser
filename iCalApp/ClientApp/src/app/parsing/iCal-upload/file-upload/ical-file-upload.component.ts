@@ -62,7 +62,7 @@ export class iCalFileUploadComponent {
     this.isFileValid = this.validateFileInput(this.file);
 
     if(this.isFileValid) {     
-      this.dataService.convertFile(this.file);//.subscribe(data => console.log(data));
+      this.dataService.convertFile(this.file);
     }
   }
 

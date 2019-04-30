@@ -23,7 +23,6 @@ export class DataService {
         .subscribe(
             data => 
             {
-                console.log(data);
                 this.json.next(data);
                 this.router.navigate(['result']);
             });
@@ -39,7 +38,6 @@ export class DataService {
           .subscribe(
             data => 
             {
-                console.log(data);
                 this.json.next(data);
                 this.router.navigate(['result']);
             });
