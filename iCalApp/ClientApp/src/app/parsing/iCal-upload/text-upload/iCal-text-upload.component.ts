@@ -13,9 +13,9 @@ import { DataService } from "../../shared/data.service";
     </div>
     </div>
 
-    <div *ngIf="!isTextValid">
+    <div  class="col-md-11" style="margin-top: 10px;" *ngIf="!isTextValid">
         <div *ngIf="text == undefined" class="alert alert-danger">Please paste text</div>
-        <div *ngIf="text != undefined" class="alert alert-danger">It seens that there is no new line values and we won't be able to parse it</div>
+        <div *ngIf="text != undefined" class="alert alert-danger">It seems that there is no new line values and we won't be able to parse it</div>
     </div>
     `,
     styles: [`
@@ -52,23 +52,26 @@ export class iCalTextUploadComponent {
         
         this.isTextValid = this.validateText(this.text);
 
-        var newLineSplit = this.text.split('\n');
+        if(this.isTextValid)
+        {
+            var newLineSplit = this.text.split('\n');
 
-        this.isTextValid = newLineSplit.length != 0;
-
-        if(this.isTextValid) {
-            this.text = "";      
-
-            for(var i = 0; i < newLineSplit.length; i ++) {
-              this.text += newLineSplit[i] + '<br/>';
+            this.isTextValid = newLineSplit.length != 0;
+    
+            if(this.isTextValid) {
+                this.text = "";      
+    
+                for(var i = 0; i < newLineSplit.length; i ++) {
+                  this.text += newLineSplit[i] + '<br/>';
+                }
+                
+                this.dataService.convertText(this.text, '<br/>');
             }
-            
-            this.dataService.convertText(this.text, '<br/>');
         }
     }
     
     validateText(text) : boolean{
-        return text == undefined;
+        return text != undefined;
     }
 
 }
