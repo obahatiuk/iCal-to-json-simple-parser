@@ -16,7 +16,6 @@ namespace iCalApp.Controllers
         [HttpPost("file-to-json"), HttpGet("file-to-json")]
         public IActionResult ConvertiCalFileToSimpleJson()
         {
-            //var filesToProvide =  Request.Body;
             var files = Request.Form.Files;
 
             if (files.Count == 0)
@@ -34,7 +33,7 @@ namespace iCalApp.Controllers
 
                 Parser parser = new Parser(content);
 
-                var result = parser.parseCalendar();
+                var result = parser.ParseCalendar();
 
                 return new JsonResult(result);
             }
@@ -53,7 +52,7 @@ namespace iCalApp.Controllers
 
             Parser parser = new Parser(text);
 
-            var result = parser.parseCalendar();
+            var result = parser.ParseCalendar();
 
             return new JsonResult(result);
             

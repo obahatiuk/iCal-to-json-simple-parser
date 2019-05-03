@@ -17,13 +17,11 @@ namespace Services
         public Parser(string content)
         {
             lines = content.Split('\n');
-            lines = concatMultiLine(lines);
-            var result = mapBegginAndEndIndexes(lines);
-
-            //parseCalendar();
+            lines = ConcatMultiLine(lines);
+            var result = MapBegginAndEndIndexes(lines);
         }
 
-        string[] concatMultiLine(string[] lines)
+        string[] ConcatMultiLine(string[] lines)
         {
             var linesList = lines.ToList();
             var linesWithoutComponentName = lines.Where(l => !l.Contains(':')).ToArray();
@@ -46,7 +44,7 @@ namespace Services
             return linesList.ToArray();
         }
 
-        List<int[]> mapBegginAndEndIndexes(string[] lines)
+        List<int[]> MapBegginAndEndIndexes(string[] lines)
         {
             var begginNodeIndexes = FindBeggingOfTheNodes(lines);
 
@@ -88,15 +86,15 @@ namespace Services
             return lines.Where(l => l.ToLower().Contains(word.ToLower())).ToArray();
         }
 
-        public ExpandoObject parseCalendar()
+        public ExpandoObject ParseCalendar()
         {
             var result = new ExpandoObject();
-            parseLinesToObject(indexes[0][0], indexes[0][1], ref result);
+            ParseLinesToObject(indexes[0][0], indexes[0][1], ref result);
 
             return result;
         }
 
-        void parseLinesToObject(int startIndex, int endIndex, ref ExpandoObject parentElement)
+        void ParseLinesToObject(int startIndex, int endIndex, ref ExpandoObject parentElement)
         {
             var tempParentObject = parentElement as IDictionary<string, object>;
             object myLock = new object();
@@ -118,8 +116,6 @@ namespace Services
 
             if (childrenNodesLinesIndexes.Count != 0)
             {
-
-
                 for (int j = 0; j < childrenNodesLinesIndexes.Count; j++)
                 {
 
@@ -183,7 +179,7 @@ namespace Services
             foreach (var objectsElements in childrenNodesLinesIndexes)
             {
                 var tempObjectAsObject = (ExpandoObject)tempObject;
-                parseLinesToObject(objectsElements[0], objectsElements[1], ref tempObjectAsObject);
+                ParseLinesToObject(objectsElements[0], objectsElements[1], ref tempObjectAsObject);
             }
 
             if (!tempParentObject.Keys.Contains(currentLevelNodeName))
